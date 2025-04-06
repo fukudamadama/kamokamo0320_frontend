@@ -52,10 +52,7 @@
 // }
 
 // 20250405追記部分
-import { Inter } from "next/font/google"
 import "./globals.css"
-
-const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "かもかも診断",
@@ -66,10 +63,22 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ja">
       <head>
-        {/* 画像の読み込みに関する設定 */}
-        <meta name="next-image-unoptimized" content="true" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body
+        style={{
+          margin: 0,
+          padding: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start" /* 上部に合わせる */,
+          paddingTop: "20px" /* 上部に余白を追加 */,
+          minHeight: "100vh",
+          backgroundColor: "#000",
+        }}
+      >
+        {children}
+      </body>
     </html>
   )
 }
