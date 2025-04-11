@@ -14,10 +14,17 @@ export default function HairTextureForm() {
     gender: "",
     bloodtype: "",
     occupation: "",
-    familyhage: [],
+    familyhage: "",
     eatinghabits: "",
-    sleep: [],
+    sleep: "",
     stress: "",
+    undo: "",
+    drink: "",
+    smoke: "",
+    usugemotivation: "",
+    usugeexperience: "",
+    futureaga: "",
+    sindan: "",
   });
 
   const handleChange = (field, value) => {
@@ -51,10 +58,24 @@ export default function HairTextureForm() {
     form.futureaga &&
     form.sindan  ;
 
-
+//最後は消すけどエラーハンドリングで書いている　ここから    
     const handleSubmit = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/hairQuestionYou`, {
+        console.log("フォーム送信処理が開始されました。");
+        console.log("現在のフォームデータ:", form);
+    
+        // 必須データの確認
+        const id = form.hairQuestionYouId;
+        if (!id) {
+          console.error("hairQuestionYouIdが指定されていません"); // エラーとしてログに出力
+          alert("hairQualityIdが設定されていません。");
+          return;
+        }
+    
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+        console.log("APIのベースURL:", apiBaseUrl); // API URLを確認するためのログ
+    
+        const response = await fetch(`${apiBaseUrl}/hairQuality/${id}/hairQuality/hairQuestionYou`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -64,17 +85,48 @@ export default function HairTextureForm() {
             age: Number(form.age),
           }),
         });
-  
-        if (!response.ok) throw new Error("送信失敗");
-  
+    
+        console.log("APIリクエスト送信成功:", response); // レスポンスオブジェクトをログに出力
+    
+        if (!response.ok) {
+          console.error("サーバーエラー発生:", response.statusText); // HTTPステータスの確認
+          throw new Error("送信に失敗しました");
+        }
+    
         const result = await response.json();
-        console.log("送信成功:", result);
+        console.log("サーバーからのレスポンス:", result); // レスポンスデータをログに出力
         alert("送信が完了しました！");
       } catch (err) {
-        console.error("送信エラー:", err);
-        alert("送信に失敗しました");
+        console.error("送信エラー:", err.message); // エラー詳細をログ出力
+        alert(`送信に失敗しました: ${err.message}`);
       }
-    };
+    }; 
+
+    //最後は消すけどエラーハンドリングで書いている　ここから 
+    
+    // const handleSubmit = async () => {
+    //   try {
+    //     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/hairQuality/hairQuestionYou`, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         ...form,
+    //         age: Number(form.age),
+    //       }),
+    //     });
+  
+    //     if (!response.ok) throw new Error("送信失敗");
+  
+    //     const result = await response.json();
+    //     console.log("送信成功:", result);
+    //     alert("送信が完了しました！");
+    //   } catch (err) {
+    //     console.error("送信エラー:", err);
+    //     alert("送信に失敗しました");
+    //   }
+    // };
   
   return (
     <div className="max-w-md mx-auto p-4 space-y-6">
